@@ -64,6 +64,8 @@ console.log(...names1); //equivalent
 
 console.log(...names1, ...names2, 'foo',); //trailing commas are okay
 
+console.log([...names1, ...names2]);
+
 console.log('------');
 
 //using spread on objects
@@ -99,3 +101,43 @@ const improvedSortByTitle = (books, ascending = true) => {
 }
 
 console.log(improvedSortByTitle(unsortedBooks, ascending = false));
+
+console.log('------');
+
+const fullNameBuilder = (first = 'John', last = 'Doe') => {
+  console.log(first + ' ' + last);
+}
+
+fullNameBuilder();
+fullNameBuilder('Ashik', 'Varghese');
+fullNameBuilder(undefined, 'Varghese'); //to skip over the first param
+fullNameBuilder(null, 'Varghese'); //first param is given a value of null
+
+console.log('------');
+
+//expressions as default params
+const taxYear = (year = new Date()) => {
+  console.log(`Your tax year is ${year}`);
+}
+
+taxYear(2016);
+taxYear();
+
+console.log('------');
+//default params computing values based on other params
+const computeTax = (fedTax = 10, stateTax = fedTax + 5) => {
+  console.log(`The federal tax is ${fedTax} and your local tax is ${stateTax}`);
+}
+computeTax();
+computeTax(5);
+computeTax(10, 20);
+
+console.log('------');
+
+//default param and rest operator interplay
+const concatenate = (first, second = 2, ...moreValues) => {
+  console.log(`First: ${first}, Second: ${second}, Rest: ${moreValues}`);
+}
+
+concatenate(1, 2, 3, 4);
+concatenate(1, 3, 4); //since the rest param is last, there is no way to omit the default value
