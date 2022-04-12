@@ -23,7 +23,7 @@ console.log('**********');
 //exercise 3
 class Message {
   constructor(text) { this.text = text; }
-  [Symbol.replace](word, substitute) {
+  [Symbol.replace](word, substitute) { //why doesn't having a function called replace() work as a substitute
     return this.text.replace(word, substitute);
   }
 }

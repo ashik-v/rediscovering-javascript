@@ -100,7 +100,7 @@ class BetterCardDeck {
     this.suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
   }
 
-  *[Symbol.iterator]() {
+  *[Symbol.iterator]() { //* only needed if the iterator uses a yield
     for(const suit of this.suits) {
       yield suit;
     }
