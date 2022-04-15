@@ -1,96 +1,86 @@
-//for...of
-const names = ['ashik', 11, 'john', 'subash', 'mini'];
+//output element and type of an array using for...of
+const names = ['ashik', 'john', 'michelle', 11];
+
 for(const name of names) {
-  //name = 'foo'; // name is an immutable constant so this will fail
-  console.log(typeof name)
-  console.log(name); // name has block scope
+  console.log(`${name}: ${typeof name}`)
 }
 
-console.log('**********');
-
-//object.entries
-console.log(names.entries()); //returns an iterator
-for (const name of names.entries()) {
-  console.log(name);
+//output element using .entries
+for(const entry of names.entries()) {
+  console.log(entry);
 }
-// but what if you want access to the index too
-for (const [i, name] of names.entries()) { // destructuring
-  console.log(`index ${i}: name: ${name}`);
+// access to the index too
+for(const [index, name] of names.entries()) {
+  console.log(index, name);
 }
 
 console.log('**********');
 
 //symbols
 
-//hidden props
-const age = Symbol('ageValue'); //declaring a symbol
-const email = 'emailValue';
+//create hidden properties using Symbol
+const age = Symbol('ageValue');
 
 const sam = {
-  first: 'Sam',
-  [email]: 'sam@example.com', //this defines a property with name 'emailValue'
-  [age]: 2
+  [age]: 3,
+  name: 'Sam'
 }
 
-for(property in sam) {
-  console.log(`${property}: ${sam[property]}`); //age is skipped since it's a Symbol
+for(property in sam) { //notice property in notation and that age is skipped
+  console.log(`${property}: ${sam[property]}`)
 }
 
-console.log(Object.getOwnPropertyNames(sam)); //age is skipped since it's a Symbol
-console.log(Object.getOwnPropertySymbols(sam)); //symbols are not private or hidden
-console.log(sam[age]); //symbols are not private or hidden
-sam[age] = 13 //symbol properties are not immutable
+console.log(Object.getOwnPropertyNames(sam)); //ageValue is hidden
+console.log(Object.getOwnPropertySymbols(sam));
 
-//When using a dot, the part after the dot must be a valid variable name,
-//and it directly names the property.
-//When using square brackets, the expression between the brackets is evaluated to get the property name
-console.log(sam.first);
-const foo = 'first'
-console.log(sam[foo]);
-console.log(sam.emailValue);
+sam[age] = 10;
+console.log(sam[age]); //immutable
 
-console.log(sam[age]);
+console.log(sam.name); //dot notation must match
+const foo = 'name';
+console.log(sam[foo]); //bracket notation needs to evaluate
 
 console.log('**********');
 
 //global registry
-const tom = Symbol('tom');
-const anotherTom = Symbol('tom');
-console.log(tom === anotherTom); //each call to Symbol creates a unique symbol
+let tom = Symbol('Tom');
+let anotherTom = Symbol('Tom');
+console.log(tom === anotherTom); //false
 
-const jerry = Symbol.for('jerry');
-const anotherJerry = Symbol.for('jerry');
-console.log(jerry === anotherJerry); //each call to Symbol.for does not create a unique symbol if one already exists in the global registry
+tom = Symbol.for('Tom');
+anotherTom = Symbol.for('Tom');
+console.log(tom === anotherTom); //true
 
 console.log('**********');
 
 //special well known symbols
 
 //using custom iterators and generators
+
 class CardDeck {
   constructor() {
-    this.suitShapes = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
+    this.suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
   }
 
   [Symbol.iterator]() {
+    const self = this;
     let i = -1;
-    const self = this; //to make sure that you are continue to reference the object
     return {
       next() {
         i++;
         return {
-          done: i >= self.suitShapes.length,
-          value: self.suitShapes[i]
-        };
+          done: i >= self.suits.length,
+          value: self.suits[i]
+        }
       }
     }
   }
 }
 
-const deck = new CardDeck;
+cardDeck = new CardDeck;
 
-for (const suit of deck) {
-  console.log(suit);
+for(const suit of cardDeck) {
+  console.log(suit)
 }
 
 console.log('**********');
@@ -100,16 +90,16 @@ class BetterCardDeck {
     this.suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
   }
 
-  *[Symbol.iterator]() { //* only needed if the iterator uses a yield
+  *[Symbol.iterator](){
     for(const suit of this.suits) {
       yield suit;
     }
   }
 }
 
-const betterDeck = new BetterCardDeck;
+betterCardDeck = new BetterCardDeck;
 
-for (const suit of betterDeck) {
+for(const suit of betterCardDeck){
   console.log(suit);
 }
 
@@ -120,64 +110,58 @@ class BestCardDeck {
     this.suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
   }
 
-  *suitShapes() { //this can't be the same name as 'suits'
+  *suitShapes() {
     for(const suit of this.suits) {
       yield suit;
     }
   }
 
-  *pips() { //another generator with multiple yields
-    yield 'Ace';
+  *pips() {
     yield 'King';
     yield 'Queen';
     yield 'Jack';
+    yield 'Ace';
 
-    for(let i = 10; i > 1; i--) {
-      yield i.toString();
+    for(let i = 2; i <= 10; i++) {
+      yield i;
     }
   }
 
-  *suitsAndPips() { //combining two generators
+  *suitsAndPips(){
     yield* this.suitShapes();
     yield* this.pips();
   }
 }
 
-const bestDeck = new BestCardDeck;
+bestCardDeck = new BestCardDeck;
 
-for(const suit of bestDeck.suitShapes()) {
+for(const suit of bestCardDeck.suitShapes()) {
   console.log(suit);
 }
-
 console.log('**********');
-
-for(const suit of bestDeck.suits) { //why not just do this instead of going through all the trouble above
-  console.log(suit);
+for(const pip of bestCardDeck.pips()) {
+  console.log(pip);
+}
+console.log('**********');
+for(const suitAndPip of bestCardDeck.suitsAndPips()) {
+  console.log(suitAndPip);
 }
 
-console.log('**********');
-
-for (const pip of bestDeck.pips()) {
-  process.stdout.write(pip + ' ');
-}
 
 console.log('\n**********');
 
-for (const suitAndPip of bestDeck.suitsAndPips()) {
-  process.stdout.write(suitAndPip + ' ');
-}
-
-console.log('\n**********');
-
+//function to test if a number is prime or not
 const isPrime = (number) => {
-  for(let i = 2; i < number; i++){
-    if (number % i == 0) return false;
+  for(let i = 2; i < number; i++) {
+    if(number % i === 0) {
+      return false;
+    }
+    return number > 1;
   }
-  return number > 1
 }
 
-const primeStartingFrom = function*(start) {
-  let index = start;
+const primerStartingFrom = function*(number) {
+  let index = number;
 
   while(true) {
     if(isPrime(index)) yield index;
@@ -185,8 +169,7 @@ const primeStartingFrom = function*(start) {
   }
 }
 
-for(const number of primeStartingFrom(10)) { //how to iterate over this generator without a for...of loop
-  console.log(number + ', ');
+for(const number of primerStartingFrom(10)) {
+  console.log(number, ' ');
   if(number > 25) break;
 }
-
