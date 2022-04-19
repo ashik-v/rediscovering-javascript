@@ -1,12 +1,8 @@
 //exercise 1
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
-for(let i = 0; i < letters.length; i += 3) {
-  console.log(letters[i]);
-}
-
-for(const letter of letters) {
-  if(letters.indexOf(letter, 0) % 3 == 0) console.log(letter);
+for (const [index, letter] of letters.entries()) {
+  if (index % 3 === 0) console.log(letter)
 }
 
 console.log('**********');
@@ -14,17 +10,17 @@ console.log('**********');
 //exercise 2
 const numbers = [1, 2, 3];
 console.log("The Symbol properties in arrays are: ");
-console.log(
-  Object.getOwnPropertySymbols(Object.getPrototypeOf(numbers))
-);
+console.log(Object.getOwnPropertySymbols(Object.getPrototypeOf(numbers)));
+
 
 console.log('**********');
 
 //exercise 3
 class Message {
   constructor(text) { this.text = text; }
-  [Symbol.replace](word, substitute) { //why doesn't having a function called replace() work as a substitute
-    return this.text.replace(word, substitute);
+
+  [Symbol.replace](message, substitute) {
+    return this.text.replace(message, substitute); //what is going on lol
   }
 }
 
@@ -40,42 +36,38 @@ console.log('**********');
 
 //exercise 4
 const fibonacciSeries = function*() {
-  let current = 1;
-  let next = 1;
+  let current = 1, next = 1;
   yield* [current, next];
 
   while(true) {
-    const temp = current;
-    current = next;
-    next = next + temp;
-    yield next;
+    const output = current + next;
+    current = next
+    next = output;
+    yield output;
   }
 }
-for(const value of fibonacciSeries()) {
-  if(value > 25) break;
-  process.stdout.write(value + ', ');
+
+for (number of fibonacciSeries()) {
+  if (number > 25) break;
+  console.log(number);
 }
 
 console.log('\n**********');
 
 //exercise 5
-const fibonacciSeriesWithIndex = function*() {
-  let current = 1;
-  let next = 1;
-  let index = 0;
-
+const fibonacciSeriesWithIndex = function*(){
+  let current = 1, next = 1, index = 1;
   yield* [[index++, current], [index++, next]];
 
   while(true) {
-    const temp = current;
+    const output = current + next;
     current = next;
-    next = next + temp;
-
-    yield [index++, next]
+    next = output;
+    yield [index++, output];
   }
 }
 
 for(const [index, value] of fibonacciSeriesWithIndex()) {
-  if(index > 8) break;
-  process.stdout.write(value + ', ');
+  if(index > 10) break;
+  console.log(value);
 }

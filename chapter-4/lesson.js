@@ -150,29 +150,22 @@ for (const suitAndPip of bestCardDeck.suitsAndPips()) {
 console.log('**********');
 
 //infinite sequences
-//function to test if a number is prime or not
 const isPrime = (number) => {
-  for(let i = 2; i < number; i++) {
-    if(number % i === 0) {
-      return false;
-    }
+  for (let i = 2; i < number; i++) {
+    if (number % i === 0) return false;
   }
   return number > 1;
 }
 
-//generator to generate an infinite sequence
 const primeStartingFrom = function*(start) {
-  let i = start;
+  let index = start
   while(true) {
-    if(isPrime(i)) {
-      yield i;
-    }
-    i++;
+    if(isPrime(index)) yield index;
+    index++;
   }
 }
 
-//implementation
-for (const prime of primeStartingFrom(10)) {
-  console.log(prime);
-  if(prime > 25) break;
+for (number of primeStartingFrom(25)) {
+  console.log(number);
+  if (number > 40) break;
 }
