@@ -1,6 +1,6 @@
 //output element and type of an array using for...of
-const names = ['ashik', 'michelle'];
-for(name of names) {
+const names = ['ashik', 'michelle', 'john'];
+for(const name of names) {
   console.log(name);
 }
 
@@ -18,68 +18,67 @@ console.log('**********');
 //symbols
 
 //create hidden properties using Symbol
-const age = Symbol('ageValue');
+const sensitiveInformation = Symbol('sensitiveInformation');
 
 const sam = {
-  [age]: 4,
-  name: 'Sam'
+  age: 7,
+  name: 'sam',
+  [sensitiveInformation]: 'gotcha!'
 }
 
 for (property in sam) {
   console.log(property); //age is hidden
 }
 
-console.log(sam); //but not really
-
+console.log(Object.getOwnPropertyNames(sam));
 console.log(Object.getOwnPropertySymbols(sam));
 
-sam[age] = 5;
+console.log(sam);
 
-console.log(sam); //not immutable
+sam[sensitiveInformation] = 'gotcha again!'
 
-console.log(Object.getOwnPropertyNames(sam));
+console.log(Object.getOwnPropertySymbols(sam));
+console.log(sam);
 
 console.log('**********');
 
 //global registry
-
 const tom = Symbol('Tom');
 const anotherTom = Symbol('Tom');
 console.log(tom === anotherTom);
 
 const jerry = Symbol.for('Jerry');
 const anotherJerry = Symbol.for('Jerry');
-console.log(jerry === anotherJerry);
+console.log(anotherJerry === jerry);
 
 console.log('**********');
 
 //special well known symbols
 
 //using custom iterators and generators
-
 class CardDeck {
   constructor() {
     this.suitShapes = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
   }
 
   [Symbol.iterator]() {
-    let i = -1;
+    let index = -1;
     const self = this;
     return {
       next() {
-        i++;
+        index++;
         return {
-          done: i >= self.suitShapes.length,
-          value: self.suitShapes[i]
+          done: index >= self.suitShapes.length,
+          value: self.suitShapes[index]
         }
       }
     }
   }
 }
 
-deck = new CardDeck;
+const cardDeck = new CardDeck;
 
-for (const suit of deck) {
+for (suit of cardDeck) {
   console.log(suit);
 }
 
@@ -91,15 +90,15 @@ class BetterCardDeck {
   }
 
   *[Symbol.iterator]() {
-    for (const suit of this.suitShapes) {
-      yield suit;
+    for (const shape of this.suitShapes){
+      yield shape;
     }
   }
 }
 
-betterDeck = new BetterCardDeck;
+const betterCardDeck = new BetterCardDeck;
 
-for (const suit of betterDeck) {
+for (suit of betterCardDeck) {
   console.log(suit);
 }
 
@@ -111,8 +110,8 @@ class BestCardDeck {
   }
 
   *suits() {
-    for (const suit of this.suitShapes) {
-      yield suit;
+    for (const shape of this.suitShapes){
+      yield shape;
     }
   }
 
@@ -122,8 +121,8 @@ class BestCardDeck {
     yield 'Jack';
     yield 'Ace'
 
-    for (let i = 2; i <= 10; i++) {
-      yield i;
+    for (let pip = 10; pip >= 2; pip--) {
+      yield pip;
     }
   }
 
@@ -135,37 +134,43 @@ class BestCardDeck {
 
 const bestCardDeck = new BestCardDeck;
 
-for (const suit of bestCardDeck.suits()) {
-  console.log(suit)
+for (suit of bestCardDeck.suits()) {
+  console.log(suit);
 }
+
 console.log('**********');
-for (const pip of bestCardDeck.pips()){
+
+for (pip of bestCardDeck.pips()) {
   console.log(pip);
 }
+
 console.log('**********');
-for (const suitAndPip of bestCardDeck.suitsAndPips()) {
-  console.log(suitAndPip);
+
+for (suitsAndPip of bestCardDeck.suitsAndPips()) {
+  console.log(suitsAndPip);
 }
 
 console.log('**********');
 
 //infinite sequences
 const isPrime = (number) => {
-  for (let i = 2; i < number; i++) {
+  let i = 2;
+  while (i < number) {
     if (number % i === 0) return false;
+    i++;
   }
   return number > 1;
 }
 
-const primeStartingFrom = function*(start) {
-  let index = start
+const primeStartingFrom = function*(start){
+  let number = start;
   while(true) {
-    if(isPrime(index)) yield index;
-    index++;
+    if (isPrime(number)) yield number;
+    number++
   }
 }
 
 for (number of primeStartingFrom(25)) {
   console.log(number);
-  if (number > 40) break;
+  if (number > 100) break;
 }
