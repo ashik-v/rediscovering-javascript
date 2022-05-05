@@ -15,7 +15,7 @@ const sqr = (n) => n*n; //implicit return for one-liners
 console.log(sqr(2));
 
 //anonymous function written as an arrow function and passed as an argument vs the alternative
-setTimeout(() => console.log('Hello'), 500);
+setTimeout(() => console.log('Hello'), 500); //reads better
 setTimeout(function() { console.log('Hello')}, 500);
 
 console.log('**********');
