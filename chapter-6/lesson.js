@@ -35,7 +35,7 @@ console.log(message);
 
 console.log('**********');
 
-//tagged template literal - String.raw
+//tagged template literal - String.raw, custom tags
 console.log('some special characters: \\ \\b \\n \'');
 console.log("some special characters: \\ \\b \\n '"); //saves a backslash on the ' when you use ""
 console.log(String.raw`some special characters: \ \b \n '`); //less noisy to use the String.raw tag
@@ -146,13 +146,13 @@ console.log(lat, lon, fav);
 const printInfo = ({theName, theAge}) => console.log(`This person is called ${theName} and is ${theAge} years old.`) //can destructure in parameter list directly which means no need to pass the whole object
 printInfo(john);
 
-const { address: { street }, shipping: { street: theStreet } } = john; //deep destructuring and avoinding conflicts for similarly named deep properties
+const { address: { street }, shipping: { street: theStreet } } = john; //deep destructuring and avoiding conflicts for similarly named deep properties
 console.log(street, theStreet);
 
 let thaName = 'foo';
-({ theName: thaName } = john); //need to wrap in () if reusing a previous variable
+({ theName: thaName } = john); //need to wrap in () if reusing a previous variable presumably because of scoping issues
 console.log(thaName);
 
-const addNewProp = (person) => ({...person, gotcha: 'sucker'}) //when adding(extending) objects always prefer to copy the whole object
+const addNewProp = (person) => ({...person, gotcha: 'sucker'}) //when adding props to objects (i.e. extending them) always prefer to copy the whole object
 newJohn = addNewProp(john);
 console.log(newJohn);
