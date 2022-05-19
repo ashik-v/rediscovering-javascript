@@ -24,6 +24,15 @@ const greeting = subject => console.log('Hello', subject);
 
 setTimeout(greeting.bind(null, 'Earthling'), 500); //how does bind work?
 
+=======
+setTimeout(() => console.log('Hello'), 500);
+setTimeout(function() { console.log('Hello')}, 500);
+
+console.log('**********')
+
+const greet = subject => console.log('Hello', subject);
+
+setTimeout(greet.bind(null, 'Earthling'), 500); //how does bind work?
 
 //lexical scoping vs dynamic scoping in the context of anonymous vs arrow functions
 //lexical scoping means from the scope where the function is defined
@@ -35,6 +44,12 @@ const self =  this;
 setTimeout(function() {
   console.log('**********');
   console.log(this.stuff); //dynamic scope
+=======
+const someValue = 'foo';
+this.stuff = 'from lexical scope'
+const self =  this;
+setTimeout(function() {
+  console.log(this.stuff);
   console.log(self.stuff);
   console.log(someValue);
 }, 500)
@@ -139,8 +154,4 @@ const returnObject = (name) => ({ firstName: name }); //need parenthesis here ot
 console.log(returnObject('Ashik'));
 
 console.log('**********');
-
-
-
-
 
