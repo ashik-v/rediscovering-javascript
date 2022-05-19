@@ -24,8 +24,8 @@ const greeting = subject => console.log('Hello', subject);
 
 setTimeout(greeting.bind(null, 'Earthling'), 500); //how does bind work?
 
-=======
 setTimeout(() => console.log('Hello'), 500);
+
 setTimeout(function() { console.log('Hello')}, 500);
 
 console.log('**********');
