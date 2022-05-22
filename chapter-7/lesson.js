@@ -103,14 +103,72 @@ class MotorcycleWithGetterAndSetter {
 
   get distanceTravelled() { return this.miles }
 
-  set distanceTravelled(distance) {
+  set distanceTravelled(distance) { //setters can and should take exactly 1 parameter
+    if (distance < this.miles) {
+      throw new Error('Cannot set to less than miles already travelled')
+    }
     this.miles = distance;
+  }
+
+  drive(distance) {
+    this.miles += distance;
   }
 }
 
 const johnsBike = new MotorcycleWithGetterAndSetter(2000);
-johnsBike.distanceTravelled = 1000;
+johnsBike.drive(1000);
 console.log(johnsBike.distanceTravelled);
 
+try {
+  johnsBike.distanceTravelled = 0;
+} catch { //catch can take an expression too, that will be the error message
+  console.log('Whoops');
+}
+
 console.log('**********')
+
+// adding static members
+MotorcycleWithGetterAndSetter.distanceFactor = 0.01; //adding a static field
+console.log(MotorcycleWithGetterAndSetter.distanceFactor);
+console.log(MotorcycleWithGetterAndSetter);
+console.log(Object.keys(MotorcycleWithGetterAndSetter));
+
+class MotorcycleWithStaticMembers {
+  constructor(year) {
+    this.year = year;
+    this.miles = 0;
+  }
+
+  static get foo () { //defining a static getter
+    console.log('hello'); //why doesn't this ever print??
+    return this; //this is dynamically scoped in static members
+  }
+
+  static get ageFactor() {
+    return 0.1;
+  }
+
+  get age() {
+    console.log('hello'); //but this does??
+    console.log(this);
+    return new Date().getFullYear() - this.year;
+  }
+
+  get distanceTravelled() { return this.miles }
+
+  set distanceTravelled(distance) { //setters can and should take exactly 1 parameter
+    if (distance < this.miles) {
+      throw new Error('Cannot set to less than miles already travelled')
+    }
+    this.miles = distance;
+  }
+
+  drive(distance) {
+    this.miles += distance;
+  }
+}
+
+michellesBike = new MotorcycleWithStaticMembers(1998);
+console.log(michellesBike.foo); //dynamic scoping of foo static member i.e does not refer to the instance of the class
+console.log(michellesBike.age); //but this in this context refers to the instance of the class
 
