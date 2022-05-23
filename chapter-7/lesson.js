@@ -135,13 +135,14 @@ console.log(Object.keys(MotorcycleWithGetterAndSetter));
 
 class MotorcycleWithStaticMembers {
   constructor(year) {
+    console.log(this); //this is the instance of the class
     this.year = year;
     this.miles = 0;
   }
 
   static get foo () { //defining a static getter
     console.log('hello'); //why doesn't this ever print??
-    return this; //this is dynamically scoped in static members
+    return this; //this is dynamically scoped in static members -> prints undefined
   }
 
   static get ageFactor() {
@@ -150,7 +151,7 @@ class MotorcycleWithStaticMembers {
 
   get age() {
     console.log('hello'); //but this does??
-    console.log(this);
+    console.log(this); //prints the class and it's instance's attributes/props
     return new Date().getFullYear() - this.year;
   }
 
@@ -172,3 +173,47 @@ michellesBike = new MotorcycleWithStaticMembers(1998);
 console.log(michellesBike.foo); //dynamic scoping of foo static member i.e does not refer to the instance of the class
 console.log(michellesBike.age); //but this in this context refers to the instance of the class
 
+console.log('**********')
+
+//class expressions
+const createClass = function(...fields) {
+  return class { //this is a class expression - notce that a name is optional
+    constructor(...values) {
+      fields.forEach((field, index) => this[field] = values[index]);
+    }
+  }
+}
+
+const Actor = createClass('firstName', 'lastName', 'yearStarted'); //dynamically creating a new class
+console.log(Actor); //this is an anonymous class
+
+const bruceLee = new Actor('bruce', 'lee', 1994); // how are the fields generated - where can I see them
+console.log(bruceLee.constructor.name); //no class name since this is an anonymous class
+console.log(bruceLee); //comes out like an object since this class is anonymous
+
+console.log('**********')
+
+// names class expressions
+const createNamedClass = function(...fields) {
+  return class Movie {
+    constructor(...values) {
+      fields.forEach((field, index) => this[field] = values[index]);
+    }
+  }
+}
+
+const movieRating = createNamedClass('year', 'rating'); //dynamically creating a new class based on this template
+console.log(movieRating); //named class expression
+
+const rushHour = new movieRating('1994', 3);
+console.log(rushHour); // does not come out in JSON since a class name is known
+
+try {
+  console.log(Movie); //careful as we actually do not have access to Movie
+} catch(ex) {
+  console.log(ex.message);
+}
+
+console.log('**********')
+
+// Set, Map, WeakSet, WeakMap - new built-in classes
