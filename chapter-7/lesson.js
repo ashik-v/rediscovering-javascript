@@ -217,3 +217,31 @@ try {
 console.log('**********')
 
 // Set, Map, WeakSet, WeakMap - new built-in classes
+
+// using set
+const names = new Set(['ashik', 'michelle', 'john', 'john']) //creating a new set
+names.add('john'); // use the add method to add new names
+console.log(names); // duplicates were ignored
+
+names.add('george').add('mini'); // add methods can be chained since this method returns the current Set
+console.log(names);
+
+console.log(names.size); // size method returns the size
+console.log(names.has('john')); // has method checks if the given set has something
+console.log(names.keys()); // use the keys method to get all the contents of a set in an iterator
+console.log(names.entries()); // can use the entries method too
+// use clear to delete the entire contents or delete to delete a specific entry
+
+for (const name of names) { // can use the for...of iterator
+  console.log(name);
+}
+// can also use forEach, but cannot use map or filter etc...but there is a workaround
+console.log([...names]); // converting the set to an array - destructuring still works
+
+const result = [...names]
+  .filter(name => name.startsWith('j'))
+  .map(name => name.toUpperCase());
+console.log(result);
+
+// using map
+
