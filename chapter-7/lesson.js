@@ -243,5 +243,43 @@ const result = [...names]
   .map(name => name.toUpperCase());
 console.log(result);
 
-// using map
+console.log('**********')
 
+// using map
+const scores = new Map([['ashik', 1], ['michelle', 2]]); // an array of arrays pretty much
+scores.set('john', 3).set('mini', 4); // chaining set method to add new maps
+console.log(scores);
+
+for(const [name, score] of scores.entries()) { // is also iterable
+  console.log(`${name}: ${score}`);
+}
+
+scores.forEach(score => console.log(score)); // goes over values
+scores.forEach((value, key) => console.log(value, key)); // heads up that this is kind of backwards value-key instaed of key-value
+
+console.log('**********')
+
+// using WeakMap and WeakSet
+
+// these guys prettty much allow for automatic garbage collection of unused entries
+// not iterable since things can be disposed of at any moment
+// cannot hold primitives, objects only
+// no size property
+
+const MAX = 10000; // change this to 100000000 and the heap runs out of memory
+const map = new Map();
+
+for (let i = 0; i <= MAX; i++) {
+  const key = {index: i};
+  map.set(key, i)
+}
+console.log("MAP DONE!");
+
+const WEAKMAX = 100000000;
+const weakMap = new WeakMap();
+
+for(let i = 0; i <= WEAKMAX; i++) {
+  const key = { index: i };
+  weakMap.set(key, i);
+}
+console.log("WEAK MAP DONE!"); // takes longer but is kinder to memory usage
