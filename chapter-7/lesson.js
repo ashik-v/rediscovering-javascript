@@ -133,6 +133,8 @@ console.log(MotorcycleWithGetterAndSetter.distanceFactor);
 console.log(MotorcycleWithGetterAndSetter);
 console.log(Object.keys(MotorcycleWithGetterAndSetter));
 
+console.log('**********')
+
 class MotorcycleWithStaticMembers {
   constructor(year) {
     console.log(this); //this is the instance of the class
@@ -173,11 +175,11 @@ michellesBike = new MotorcycleWithStaticMembers(1998);
 console.log(michellesBike.foo); //dynamic scoping of foo static member i.e does not refer to the instance of the class
 console.log(michellesBike.age); //but this in this context refers to the instance of the class
 
-console.log('**********')
+console.log('*****HERE*****')
 
 //class expressions
 const createClass = function(...fields) {
-  return class { //this is a class expression - notce that a name is optional
+  return class { //this is a class expression - notice that a name is optional
     constructor(...values) {
       fields.forEach((field, index) => this[field] = values[index]);
     }
@@ -275,7 +277,7 @@ for (let i = 0; i <= MAX; i++) {
 }
 console.log("MAP DONE!");
 
-const WEAKMAX = 100000000;
+const WEAKMAX = 1000000;
 const weakMap = new WeakMap();
 
 for(let i = 0; i <= WEAKMAX; i++) {
@@ -283,3 +285,4 @@ for(let i = 0; i <= WEAKMAX; i++) {
   weakMap.set(key, i);
 }
 console.log("WEAK MAP DONE!"); // takes longer but is kinder to memory usage
+console.log(MotorcycleWithStaticMembers.constructor.foo)
