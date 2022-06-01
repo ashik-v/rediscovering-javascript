@@ -51,7 +51,7 @@ class Person {
 class ReputablePerson extends Person { // use extends for prototypal inheritance in JS
   constructor(firstName, lastName, rating) {
     console.log(`initializing ReputablePerson fields`);
-    super(firstName, lastName); // base class must be iniitalized before the derived class acn use 'this'
+    super(firstName, lastName); // base class must be initialized before the derived class can use 'this'
     this.rating = rating;
   }
 
