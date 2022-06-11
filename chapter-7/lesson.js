@@ -1,7 +1,7 @@
 // old way of creating classes was via functions
 
 // new way
-// console.log(Car); -> class definitions are not joisted i.e. this will error
+// console.log(Car); -> class definitions are not hoisted i.e. this will error
 const createTestClass = () => new TestClass;
 
 class TestClass {};
